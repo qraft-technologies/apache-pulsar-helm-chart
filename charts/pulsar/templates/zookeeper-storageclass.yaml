@@ -35,6 +35,8 @@ provisioner: {{ .Values.zookeeper.volumes.data.storageClass.provisioner }}
 parameters:
   type: {{ .Values.zookeeper.volumes.data.storageClass.type }}
   fsType: {{ .Values.zookeeper.volumes.data.storageClass.fsType }}
+  iopsPerGB: {{ quote .Values.zookeeper.volumes.data.storageClass.iopsPerGB }}
+  encrypted: {{ quote .Values.zookeeper.volumes.data.storageClass.encrypted }}
 {{- end }}
 {{- end }}
 {{- end }}
