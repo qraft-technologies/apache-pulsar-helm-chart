@@ -16,6 +16,14 @@
 # specific language governing permissions and limitations
 # under the License.
 #
+# apiVersion: storage.k8s.io/v1
+# kind: StorageClass
+# metadata:
+#   name: io2
+# provisioner: kubernetes.io/aws-ebs
+# parameters:
+#   type: io2
+#   iopsPerGB: "4000"
 
 {{- if .Values.components.bookkeeper }}
 {{- if and (and .Values.persistence .Values.volumes.persistence) .Values.bookkeeper.volumes.persistence }}
@@ -50,7 +58,9 @@ metadata:
 provisioner: {{ .Values.bookkeeper.volumes.journal.storageClass.provisioner }}
 parameters:
   type: {{ .Values.bookkeeper.volumes.journal.storageClass.type }}
+  iopsPerGB: {{ quote .Values.bookkeeper.volumes.journal.storageClass.iopsPerGB }}
   fsType: {{ .Values.bookkeeper.volumes.journal.storageClass.fsType }}
+  encrypted: {{ quote .Values.bookkeeper.volumes.journal.storageClass.encrypted }}
 {{- end }}
 ---
 {{- if and (not .Values.bookkeeper.volumes.ledgers.local_storage) .Values.bookkeeper.volumes.ledgers.storageClass }}
@@ -66,7 +76,8 @@ provisioner: {{ .Values.bookkeeper.volumes.ledgers.storageClass.provisioner }}
 parameters:
   type: {{ .Values.bookkeeper.volumes.ledgers.storageClass.type }}
   fsType: {{ .Values.bookkeeper.volumes.ledgers.storageClass.fsType }}
-{{- end }}
+  iopsPerGB: {{ quote .Values.bookkeeper.volumes.ledgers.storageClass.iopsPerGB }}
+  encrypted: {{ quote .Values.bookkeeper.volumes.ledgers.storageClass.encrypted }}
 {{- end }}
 
 {{- end }}
