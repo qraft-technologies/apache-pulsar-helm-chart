@@ -79,7 +79,7 @@ parameters:
   iopsPerGB: {{ quote .Values.bookkeeper.volumes.ledgers.storageClass.iopsPerGB }}
   encrypted: {{ quote .Values.bookkeeper.volumes.ledgers.storageClass.encrypted }}
 {{- end }}
-
+{{- end }}
 {{- end }}
 {{- end }}
 {{- end }}
