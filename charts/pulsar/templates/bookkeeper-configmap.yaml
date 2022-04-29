@@ -35,6 +35,7 @@ data:
   {{- end }}
   # Do not retain journal files as it increase the disk utilization
   journalMaxBackups: "0"
+  journalWriteData: "false"
   {{- if .Values.bookkeeper.volumes.journal.useMultiVolumes }}
   {{- $journalDirs := list -}}
   {{ range .Values.bookkeeper.volumes.journal.multiVolumes }}
