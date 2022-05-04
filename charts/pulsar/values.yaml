@@ -188,6 +188,10 @@ images:
     repository: prom/prometheus
     tag: v2.17.2
     pullPolicy: IfNotPresent
+  node_exporter:
+    repository: prom/node-exporter
+    tag: v0.16.0
+    pullPolicy: "IfNotPresent"
   grafana:
     repository: streamnative/apache-pulsar-grafana-dashboard-k8s
     tag: 0.0.16
@@ -1083,6 +1087,16 @@ grafana:
   admin:
     user: pulsar
     password: pulsar
+
+node_exporter:
+  component: node-exporter
+  annotations: {}
+  limits:
+    cpu: 10m
+    memory: 50Mi
+  requests:
+    cpu: 10m
+    memory: 50Mi
 
 ## Components Stack: pulsar_manager
 ## templates/pulsar-manager.yaml
