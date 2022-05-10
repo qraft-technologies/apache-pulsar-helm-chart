@@ -36,6 +36,10 @@ data:
     - job_name: 'prometheus'
       static_configs:
       - targets: ['localhost:9090']
+    - job_name: 'host-services'
+      file_sd_configs:
+      - files:
+        - '/etc/hostip/hostip.json'
     - job_name: 'kubernetes-pods'
       kubernetes_sd_configs:
       - role: pod
