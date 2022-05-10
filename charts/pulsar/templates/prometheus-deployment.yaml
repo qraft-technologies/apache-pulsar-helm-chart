@@ -55,6 +55,30 @@ spec:
       serviceAccount: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}"
     {{- end }}
       terminationGracePeriodSeconds: {{ .Values.prometheus.gracePeriod }}
+      initContainers:
+      - name: inject-file-sd-config
+        image: "{{ .Values.images.prometheus.repository }}:{{ .Values.images.prometheus.tag }}"
+        imagePullPolicy: {{ .Values.images.prometheus.pullPolicy }}
+        env:
+          - name: NODE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+        command: ["sh", "-c"]
+        # should be in sync with port-forwarding defined at https://github.com/qraft-technologies/axe-rest-api/blob/main/run-axe-api.sh
+        args:
+        - >
+          printf '[{
+            "targets": [
+              "%s:40001"
+            ],
+            "labels": {
+              "job": "node"
+            }
+          }]' "$NODE_IP" > /etc/hostip/hostip.json
+        volumeMounts:
+        - name: hostip
+          mountPath: /etc/hostip
       containers:
       - name: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}"
         image: "{{ .Values.images.prometheus.repository }}:{{ .Values.images.prometheus.tag }}"
@@ -75,6 +99,8 @@ spec:
           mountPath: /etc/prometheus
         - name: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}-{{ .Values.prometheus.volumes.data.name }}"
           mountPath: /prometheus
+        - name: hostip
+          mountPath: /etc/hostip
       securityContext:
         fsGroup: 65534
         runAsGroup: 65534
@@ -84,6 +110,8 @@ spec:
       - name: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}-config"
         configMap:
           name: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}"
+      - name: hostip
+        emptyDir: {}
     {{- if not (and (and .Values.persistence .Values.volumes.persistence) .Values.prometheus.volumes.persistence) }}
       - name: "{{ template "pulsar.fullname" . }}-{{ .Values.prometheus.component }}-{{ .Values.prometheus.volumes.data.name }}"
         emptyDir: {}
