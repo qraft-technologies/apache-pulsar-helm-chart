@@ -28,7 +28,7 @@ namespace: ""
 namespaceCreate: false
 
 ## clusterDomain as defined for your k8s cluster
-clusterDomain: cluster.local
+clusterDomain: cluster.local.
 
 ###
 ### Global Settings
