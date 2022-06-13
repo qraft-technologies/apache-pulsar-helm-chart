@@ -877,6 +877,11 @@ proxy:
   service:
     annotations: {}
     type: LoadBalancer
+    nodePort:
+      http: 30080
+      https: 30443
+      pulsar: 30002
+      pulsarssl: 30020
   ## Proxy ingress
   ## templates/proxy-ingress.yaml
   ##
