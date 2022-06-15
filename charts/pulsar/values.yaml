@@ -1063,7 +1063,7 @@ grafana:
   service:
     type: LoadBalancer
     port: 3000
-    targetPort: 3000
+    nodePort: 30003
     annotations: {}
   plugins: []
   ## Grafana configMap
