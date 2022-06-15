@@ -33,7 +33,12 @@ spec:
   ports:
     - name: server
       port: {{ .Values.pulsar_manager.service.port }}
+      {{- if .Values.pulsar_manager.service.targetPort }}
       targetPort: {{ .Values.pulsar_manager.service.targetPort }}
+      {{- end }}
+      {{- if .Values.pulsar_manager.service.nodePort }}
+      nodePort: {{ .Values.pulsar_manager.service.nodePort }}
+      {{- end }}
       protocol: TCP
   selector:
     {{- include "pulsar.matchLabels" . | nindent 4 }}
